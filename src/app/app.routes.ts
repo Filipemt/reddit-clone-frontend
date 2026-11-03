@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 
+import { authGuard } from './core/auth/auth.guard';
 import { Shell } from './core/layout/shell';
-import { HomePlaceholderPage } from './features/home/pages/home-placeholder.page';
+import { HomePage } from './features/home/pages/home.page';
 
 export const routes: Routes = [
   {
@@ -11,10 +12,11 @@ export const routes: Routes = [
   {
     path: '',
     component: Shell,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
-        component: HomePlaceholderPage,
+        component: HomePage,
       },
       {
         path: 'users',
