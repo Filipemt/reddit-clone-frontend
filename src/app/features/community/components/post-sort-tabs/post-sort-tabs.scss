@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.post-sort-tabs {
+  display: flex;
+  gap: 0.45rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--cp-input-border);
+}
+
+.post-sort-tabs__tab {
+  border: none;
+  background: transparent;
+  color: var(--cp-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--cp-radius-pill);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--cp-paper-muted);
+    color: var(--cp-ink);
+  }
+
+  &.is-active {
+    background: var(--cp-cobalt);
+    color: #fff;
+  }
+}

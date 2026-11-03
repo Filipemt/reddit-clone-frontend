@@ -1,0 +1,54 @@
+<header class="community-header">
+  @if (community().banner; as banner) {
+    <div class="community-header__banner">
+      <img [src]="banner.url" [alt]="community().name" />
+    </div>
+  } @else {
+    <div class="community-header__banner community-header__banner--placeholder" aria-hidden="true"></div>
+  }
+
+  <div class="community-header__body">
+    <span class="community-header__avatar" aria-hidden="true">
+      @if (community().icon; as icon) {
+        <img [src]="icon.url" [alt]="community().name" />
+      }
+    </span>
+
+    <div class="community-header__info">
+      <h1 class="community-header__title">{{ community().name }}</h1>
+      <p class="community-header__sub">
+        r/{{ community().slug }} · {{ formatCompactCount(community().memberCount) }} members
+      </p>
+    </div>
+
+    <div class="community-header__actions">
+      <button
+        type="button"
+        class="community-header__btn"
+        [class.community-header__btn--primary]="!community().isMember"
+        [class.community-header__btn--secondary]="community().isMember"
+        [disabled]="busy()"
+        (click)="onMembershipClick()"
+      >
+        @if (busy()) {
+          …
+        } @else if (community().isMember) {
+          Joined
+        } @else {
+          Join
+        }
+      </button>
+
+      @if (community().isMember) {
+        <button
+          type="button"
+          class="community-header__btn community-header__btn--primary"
+          [disabled]="busy()"
+          (click)="newPost.emit()"
+        >
+          New post
+        </button>
+      }
+    </div>
+  </div>
+</header>

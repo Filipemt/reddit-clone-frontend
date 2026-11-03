@@ -12,12 +12,21 @@ export class PostService {
 
   listByCommunity(
     communityId: string,
-    options: { sort?: 'new' | 'hot' | 'top'; page?: number; size?: number } = {},
+    options: {
+      sort?: 'new' | 'hot' | 'top';
+      period?: 'day' | 'week' | 'month' | 'year' | 'all';
+      page?: number;
+      size?: number;
+    } = {},
   ): Observable<PagedResponse<Post>> {
-    const params = new HttpParams()
+    let params = new HttpParams()
       .set('sort', options.sort ?? 'new')
       .set('page', options.page ?? 0)
       .set('size', options.size ?? 20);
+
+    if (options.period) {
+      params = params.set('period', options.period);
+    }
 
     return this.http.get<PagedResponse<Post>>(
       `${environment.apiUrl}/communities/${communityId}/posts`,

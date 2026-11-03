@@ -91,7 +91,7 @@
       <ul>
         @for (community of suggestedCommunities(); track community.communityId) {
           <li>
-            <a routerLink="/communities">
+            <a [routerLink]="['/communities', community.slug]">
               <strong>r/{{ community.slug }}</strong>
               <span>{{ formatCompactCount(community.memberCount) }} members</span>
             </a>
