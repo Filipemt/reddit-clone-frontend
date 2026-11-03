@@ -23,5 +23,6 @@ export interface CreatePostRequest {
 export interface FeedPost extends Post {
   communitySlug: string | null;
   communityName: string | null;
+  authorUsername: string | null;
   myVote: -1 | 0 | 1;
 }

@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { Community } from '../../community/models/community.model';
 import { FeedPost } from '../../post/models/post.model';
 import { PostService } from '../../post/services/post.service';
+import { AuthorLookupService } from '../../user/services/author-lookup.service';
 import { VoteService } from '../../vote/services/vote.service';
 import { VoteValue } from '../../vote/models/vote.model';
 import { formatCompactCount } from '../../../shared/utils/format-count';
@@ -20,6 +21,7 @@ import { HomeFeedService } from '../services/home-feed.service';
 export class HomePage implements OnInit {
   private readonly feedService = inject(HomeFeedService);
   private readonly postService = inject(PostService);
+  private readonly authors = inject(AuthorLookupService);
   private readonly voteService = inject(VoteService);
   private readonly fb = inject(FormBuilder);
 
@@ -85,16 +87,19 @@ export class HomePage implements OnInit {
     this.postService.create(communityId, { title, body: body || null }, this.mediaFile()).subscribe({
       next: (created) => {
         const community = this.joinedCommunities().find((c) => c.communityId === communityId);
-        const feedPost: FeedPost = {
-          ...created,
-          communitySlug: community?.slug ?? null,
-          communityName: community?.name ?? null,
-          myVote: 0,
-        };
-        this.posts.update((list) => [feedPost, ...list]);
-        this.composer.patchValue({ title: '', body: '' });
-        this.mediaFile.set(null);
-        this.posting.set(false);
+        this.authors.resolveUsername(created.authorId).subscribe((authorUsername) => {
+          const feedPost: FeedPost = {
+            ...created,
+            communitySlug: community?.slug ?? null,
+            communityName: community?.name ?? null,
+            authorUsername,
+            myVote: 0,
+          };
+          this.posts.update((list) => [feedPost, ...list]);
+          this.composer.patchValue({ title: '', body: '' });
+          this.mediaFile.set(null);
+          this.posting.set(false);
+        });
       },
       error: () => {
         this.error.set('Não foi possível publicar o post.');

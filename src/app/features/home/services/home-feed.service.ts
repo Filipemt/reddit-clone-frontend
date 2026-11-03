@@ -5,11 +5,13 @@ import { Community } from '../../community/models/community.model';
 import { CommunityService } from '../../community/services/community.service';
 import { FeedPost, Post } from '../../post/models/post.model';
 import { PostService } from '../../post/services/post.service';
+import { AuthorLookupService } from '../../user/services/author-lookup.service';
 
 @Injectable({ providedIn: 'root' })
 export class HomeFeedService {
   private readonly communities = inject(CommunityService);
   private readonly posts = inject(PostService);
+  private readonly authors = inject(AuthorLookupService);
 
   loadFeed(): Observable<{ posts: FeedPost[]; joined: Community[]; discovery: Community[] }> {
     return forkJoin({
@@ -41,44 +43,45 @@ export class HomeFeedService {
             : of([] as Post[]);
 
         return forkJoin({ joinedPosts: joinedPosts$, discoveryPosts: discoveryPosts$ }).pipe(
-          map(({ joinedPosts, discoveryPosts }) => {
+          switchMap(({ joinedPosts, discoveryPosts }) => {
             const seen = new Set<string>();
-            const toFeedPost = (post: Post): FeedPost | null => {
-              if (seen.has(post.postId)) {
-                return null;
+            const collect = (list: Post[]): Post[] => {
+              const result: Post[] = [];
+              for (const post of list.slice().sort(byNewest)) {
+                if (seen.has(post.postId)) {
+                  continue;
+                }
+                seen.add(post.postId);
+                result.push(post);
               }
-              seen.add(post.postId);
+              return result;
+            };
+
+            const ordered = [...collect(joinedPosts), ...collect(discoveryPosts)];
+
+            return this.authors.enrichFeedPosts(ordered, (post, authorUsername) => {
               const community = communityById.get(post.communityId);
               return {
                 ...post,
                 communitySlug: community?.slug ?? null,
                 communityName: community?.name ?? null,
+                authorUsername,
                 myVote: 0,
               };
-            };
-
-            const byNewest = (a: Post, b: Post) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-
-            const followed = joinedPosts
-              .slice()
-              .sort(byNewest)
-              .map(toFeedPost)
-              .filter((p): p is FeedPost => p !== null);
-            const general = discoveryPosts
-              .slice()
-              .sort(byNewest)
-              .map(toFeedPost)
-              .filter((p): p is FeedPost => p !== null);
-
-            return {
-              posts: [...followed, ...general],
-              joined: joinedList,
-              discovery: discovery.content,
-            };
+            }).pipe(
+              map((posts) => ({
+                posts,
+                joined: joinedList,
+                discovery: discovery.content,
+              })),
+            );
           }),
         );
       }),
     );
   }
+}
+
+function byNewest(a: Post, b: Post): number {
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 }

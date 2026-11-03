@@ -69,12 +69,19 @@
           <div class="feed-item__meta">
             <span class="feed-item__avatar" aria-hidden="true"></span>
             <div class="feed-item__meta-text">
+              @if (post.authorUsername; as author) {
+                <span class="feed-item__author">{{ author }}</span>
+                <span class="feed-item__handle">@{{ author }}</span>
+              }
+              <span class="feed-item__time">{{ formatRelativeTime(post.createdAt) }}</span>
               @if (post.communitySlug) {
-                <a class="feed-item__community" [routerLink]="['/communities']">
+                <a
+                  class="feed-item__community"
+                  [routerLink]="['/communities', post.communitySlug]"
+                >
                   in r/{{ post.communitySlug }}
                 </a>
               }
-              <span class="feed-item__time">{{ formatRelativeTime(post.createdAt) }}</span>
             </div>
           </div>
 
