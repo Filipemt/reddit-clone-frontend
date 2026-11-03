@@ -1,0 +1,33 @@
+<section class="community-detail">
+  @if (loading()) {
+    <p class="community-detail__status">Carregando comunidade…</p>
+  } @else if (error(); as message) {
+    <p class="community-detail__error" role="alert">{{ message }}</p>
+    <a routerLink="/communities" class="community-detail__back">Voltar para Communities</a>
+  } @else if (community(); as item) {
+    <header class="community-detail__header">
+      <span class="community-detail__avatar" aria-hidden="true">
+        @if (item.icon; as icon) {
+          <img [src]="icon.url" [alt]="item.name" />
+        }
+      </span>
+      <div class="community-detail__meta">
+        <h1 class="community-detail__title">{{ item.name }}</h1>
+        <p class="community-detail__sub">
+          r/{{ item.slug }}
+          @if (item.topicName) {
+            <span>· {{ topicLabel(item.topicName) }}</span>
+          }
+          · {{ formatCompactCount(item.memberCount) }} members
+        </p>
+        @if (item.description) {
+          <p class="community-detail__description">{{ item.description }}</p>
+        }
+      </div>
+    </header>
+
+    <p class="community-detail__note">
+      Feed, Join/Leave e New/Hot/Top chegam nas próximas partes.
+    </p>
+  }
+</section>

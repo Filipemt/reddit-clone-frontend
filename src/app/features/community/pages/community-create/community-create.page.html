@@ -1,0 +1,79 @@
+<section class="community-create">
+  <header class="community-create__header">
+    <h1 class="community-create__title">Criar Comunidade</h1>
+    <p class="community-create__subtitle">
+      Defina nome, slug e visibilidade da nova comunidade.
+    </p>
+  </header>
+
+  <form class="community-create__form" [formGroup]="form" (ngSubmit)="submit()">
+    <app-ui-text-field
+      label="Name"
+      placeholder="Java Spring"
+      formControlName="name"
+      [maxlength]="100"
+      [error]="nameError()"
+    />
+
+    <app-ui-text-field
+      label="Slug"
+      placeholder="java-spring"
+      formControlName="slug"
+      [maxlength]="100"
+      [error]="slugError()"
+    />
+
+    <app-ui-textarea
+      label="Description"
+      placeholder="Padrões Spring"
+      formControlName="description"
+      [rows]="3"
+      [maxlength]="255"
+      [error]="descriptionError()"
+    />
+
+    <div class="community-create__row">
+      <app-ui-select
+        label="Tópico"
+        placeholder="Selecione o tópico"
+        formControlName="topicId"
+        [options]="topicOptions"
+        [error]="topicError()"
+      />
+
+      <app-ui-select
+        label="Tipo"
+        placeholder="Selecione o tipo"
+        formControlName="typeId"
+        [options]="typeOptions"
+        [error]="typeError()"
+      />
+    </div>
+
+    <div class="community-create__uploads">
+      <app-ui-file-field
+        label="Ícone"
+        buttonLabel="Upload icon"
+        [disabled]="submitting()"
+        (fileChange)="onIconChange($event)"
+      />
+      <app-ui-file-field
+        label="Banner"
+        buttonLabel="Upload banner"
+        [disabled]="submitting()"
+        (fileChange)="onBannerChange($event)"
+      />
+    </div>
+
+    @if (formError(); as message) {
+      <p class="community-create__error" role="alert">{{ message }}</p>
+    }
+
+    <div class="community-create__actions">
+      <a routerLink="/communities" class="community-create__cancel">Cancelar</a>
+      <app-ui-button type="submit" [loading]="submitting()" [disabled]="submitting()">
+        Create
+      </app-ui-button>
+    </div>
+  </form>
+</section>

@@ -1,10 +1,20 @@
 import { Routes } from '@angular/router';
 
-import { CommunityPlaceholderPage } from './pages/community-placeholder.page';
+import { CommunityCreatePage } from './pages/community-create/community-create.page';
+import { CommunityDetailPage } from './pages/community-detail/community-detail.page';
+import { CommunityListPage } from './pages/community-list/community-list.page';
 
 export const COMMUNITY_ROUTES: Routes = [
   {
     path: '',
-    component: CommunityPlaceholderPage,
+    component: CommunityListPage,
+  },
+  {
+    path: 'new',
+    component: CommunityCreatePage,
+  },
+  {
+    path: ':slug',
+    component: CommunityDetailPage,
   },
 ];

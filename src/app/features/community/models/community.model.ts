@@ -15,3 +15,12 @@ export interface Community {
   isMember: boolean;
   createdAt: string;
 }
+
+export interface CreateCommunityRequest {
+  name: string;
+  slug: string;
+  description: string;
+  topicId: number;
+  typeId: number;
+  statusId: number;
+}

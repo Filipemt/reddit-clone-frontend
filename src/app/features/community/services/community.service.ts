@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../../environments/environment';
 import { PagedResponse } from '../../../shared/models/paged-response.model';
-import { Community } from '../models/community.model';
+import { Community, CreateCommunityRequest } from '../models/community.model';
 
 @Injectable({ providedIn: 'root' })
 export class CommunityService {
@@ -19,5 +19,32 @@ export class CommunityService {
   listJoined(page = 0, size = 20): Observable<PagedResponse<Community>> {
     const params = new HttpParams().set('page', page).set('size', size);
     return this.http.get<PagedResponse<Community>>(`${this.baseUrl}/me`, { params });
+  }
+
+  getBySlug(slug: string): Observable<Community> {
+    return this.http.get<Community>(`${this.baseUrl}/slug/${slug}`);
+  }
+
+  create(
+    data: CreateCommunityRequest,
+    files: { icon?: File | null; banner?: File | null } = {},
+  ): Observable<Community> {
+    const formData = new FormData();
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(data)], {
+        type: 'application/json',
+      }),
+    );
+
+    if (files.icon) {
+      formData.append('icon', files.icon);
+    }
+
+    if (files.banner) {
+      formData.append('banner', files.banner);
+    }
+
+    return this.http.post<Community>(this.baseUrl, formData);
   }
 }
