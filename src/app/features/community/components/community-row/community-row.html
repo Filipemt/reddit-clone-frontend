@@ -1,0 +1,33 @@
+<article class="community-row">
+  <a class="community-row__main" [routerLink]="['/communities', community().slug]">
+    <span class="community-row__avatar" aria-hidden="true">
+      @if (community().icon; as icon) {
+        <img [src]="icon.url" [alt]="community().name" />
+      }
+    </span>
+    <span class="community-row__text">
+      <strong class="community-row__name">{{ community().name }}</strong>
+      <span class="community-row__meta">{{ metaLine() }}</span>
+    </span>
+  </a>
+
+  @if (showJoin()) {
+    <button
+      type="button"
+      class="community-row__action community-row__action--primary"
+      [disabled]="busy()"
+      (click)="onJoin()"
+    >
+      {{ busy() ? '…' : 'Join' }}
+    </button>
+  } @else {
+    <button
+      type="button"
+      class="community-row__action community-row__action--secondary"
+      [disabled]="busy()"
+      (click)="onLeave()"
+    >
+      {{ busy() ? '…' : 'Leave' }}
+    </button>
+  }
+</article>

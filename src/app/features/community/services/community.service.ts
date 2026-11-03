@@ -47,4 +47,12 @@ export class CommunityService {
 
     return this.http.post<Community>(this.baseUrl, formData);
   }
+
+  join(communityId: string): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${communityId}/membership`, null);
+  }
+
+  leave(communityId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${communityId}/membership`);
+  }
 }

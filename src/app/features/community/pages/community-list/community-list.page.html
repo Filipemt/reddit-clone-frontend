@@ -1,9 +1,64 @@
 <section class="community-list">
   <header class="community-list__header">
     <div>
-      <h1 class="community-list__title">Communities</h1>
-      <p class="community-list__subtitle">Discover e Minhas comunidades na próxima parte.</p>
+      <h1 class="community-list__title">{{ title() }}</h1>
+      <p class="community-list__subtitle">{{ subtitle() }}</p>
     </div>
     <a routerLink="/communities/new" class="community-list__create">Create community</a>
   </header>
+
+  <div class="community-list__tabs" role="tablist" aria-label="Community views">
+    <button
+      type="button"
+      role="tab"
+      class="community-list__tab"
+      [class.is-active]="tab() === 'discover'"
+      [attr.aria-selected]="tab() === 'discover'"
+      (click)="selectTab('discover')"
+    >
+      Discover
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="community-list__tab"
+      [class.is-active]="tab() === 'joined'"
+      [attr.aria-selected]="tab() === 'joined'"
+      (click)="selectTab('joined')"
+    >
+      Minhas
+    </button>
+  </div>
+
+  @if (actionError(); as message) {
+    <p class="community-list__error" role="alert">{{ message }}</p>
+  }
+
+  @if (loading()) {
+    <p class="community-list__status">Carregando comunidades…</p>
+  } @else if (error(); as message) {
+    <p class="community-list__error" role="alert">{{ message }}</p>
+  } @else if (visibleCommunities().length === 0) {
+    <p class="community-list__status">
+      @if (tab() === 'discover') {
+        Nenhuma comunidade encontrada.
+      } @else {
+        Você ainda não entrou em nenhuma comunidade.
+      }
+    </p>
+  } @else {
+    <ul class="community-list__items">
+      @for (community of visibleCommunities(); track community.communityId) {
+        <li>
+          <app-community-row
+            [community]="community"
+            [mode]="tab()"
+            [busy]="busyId() === community.communityId"
+            (join)="onJoin($event)"
+            (leave)="onLeave($event)"
+          />
+        </li>
+      }
+    </ul>
+  }
 </section>
