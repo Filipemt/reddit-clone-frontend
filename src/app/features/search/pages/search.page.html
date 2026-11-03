@@ -1,0 +1,67 @@
+<section class="search">
+  <header class="search__header">
+    <h1>Search</h1>
+    @if (query()) {
+      <p>Resultados para “{{ query() }}”</p>
+    } @else {
+      <p>Use a barra de pesquisa para buscar posts, comunidades e usuários.</p>
+    }
+  </header>
+
+  @if (error(); as message) {
+    <p class="search__error" role="alert">{{ message }}</p>
+  }
+
+  @if (loading()) {
+    <p class="search__status">Buscando…</p>
+  } @else if (query()) {
+    <section class="search__section">
+      <h2>Communities</h2>
+      <ul>
+        @for (community of communities(); track community.communityId) {
+          <li>
+            <a routerLink="/communities">
+              <strong>r/{{ community.slug }}</strong>
+              <span>{{ community.name }}</span>
+            </a>
+          </li>
+        } @empty {
+          <li class="search__empty">Nenhuma comunidade.</li>
+        }
+      </ul>
+    </section>
+
+    <section class="search__section">
+      <h2>Users</h2>
+      <ul>
+        @for (user of users(); track user.userId) {
+          <li>
+            <a routerLink="/users">
+              <strong>@{{ user.username }}</strong>
+              <span>karma {{ user.karma }}</span>
+            </a>
+          </li>
+        } @empty {
+          <li class="search__empty">Nenhum usuário.</li>
+        }
+      </ul>
+    </section>
+
+    <section class="search__section">
+      <h2>Posts</h2>
+      <ul>
+        @for (post of posts(); track post.postId) {
+          <li class="search__post">
+            <h3>{{ post.title }}</h3>
+            @if (post.body) {
+              <p>{{ post.body }}</p>
+            }
+            <span>{{ formatRelativeTime(post.createdAt) }}</span>
+          </li>
+        } @empty {
+          <li class="search__empty">Nenhum post.</li>
+        }
+      </ul>
+    </section>
+  }
+</section>

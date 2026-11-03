@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
-import { SearchPlaceholderPage } from './pages/search-placeholder.page';
+import { SearchPage } from './pages/search.page';
 
 export const SEARCH_ROUTES: Routes = [
   {
     path: '',
-    component: SearchPlaceholderPage,
+    component: SearchPage,
   },
 ];
