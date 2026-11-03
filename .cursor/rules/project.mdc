@@ -1,0 +1,25 @@
+---
+description: Localização do Obsidian Vault (fonte de contexto) deste projeto
+alwaysApply: true
+---
+
+# Obsidian Vault do projeto
+
+- Caminho: `/Users/motadev/Documents/Obsidian Vault/01. Projetos/reddit-clone-frontend`
+- Ponto de entrada: `Index.md`
+
+## Estrutura
+
+| Pasta | Conteúdo |
+|---|---|
+| `00 - Projeto/` | Visão geral, arquitetura, decisões, roadmap |
+| `core/` | Auth, interceptors, guards, layout, config |
+| `shared/` | UI compartilhada, pipes, directives, models comuns |
+| `features/` | Uma nota por feature alinhada ao domínio da API |
+
+## Convenções
+
+- Links bidirecionais com `[[Nome da Nota]]`; nomes de nota são únicos no Vault.
+- Toda nota nova é linkada a partir do `Index.md` ou da nota principal do módulo, e aponta de volta (`Voltar: [[...]]`).
+- O frontend consome a API documentada no vault [[reddit-clone-backend]]; contratos HTTP não são reinventados aqui.
+- Funcionalidade desenhada e não implementada é marcada com **Status: desenhado, não implementado** ou **planejado**.

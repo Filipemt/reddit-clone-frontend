@@ -1,0 +1,15 @@
+<header class="shell__header">
+  <a routerLink="/" class="shell__brand">reddit-clone</a>
+  <nav class="shell__nav" aria-label="Feature placeholders">
+    <a routerLink="/auth" routerLinkActive="is-active">auth</a>
+    <a routerLink="/communities" routerLinkActive="is-active">communities</a>
+    <a routerLink="/posts" routerLinkActive="is-active">posts</a>
+    <a routerLink="/search" routerLinkActive="is-active">search</a>
+    <a routerLink="/notifications" routerLinkActive="is-active">notifications</a>
+    <a routerLink="/users" routerLinkActive="is-active">users</a>
+  </nav>
+</header>
+
+<main class="shell__main">
+  <router-outlet />
+</main>
