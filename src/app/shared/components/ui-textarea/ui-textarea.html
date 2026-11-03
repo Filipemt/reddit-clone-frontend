@@ -1,0 +1,18 @@
+<label class="ui-textarea" [attr.for]="inputId()">
+  <span class="ui-textarea__label">{{ label() }}</span>
+  <textarea
+    class="ui-textarea__control"
+    [class.ui-textarea__control--invalid]="!!error()"
+    [id]="inputId()"
+    [placeholder]="placeholder()"
+    [rows]="rows()"
+    [attr.maxlength]="maxlength()"
+    [value]="value()"
+    [disabled]="disabled()"
+    (input)="onInput($event)"
+    (blur)="markTouched()"
+  ></textarea>
+  @if (error()) {
+    <span class="ui-textarea__error" role="alert">{{ error() }}</span>
+  }
+</label>

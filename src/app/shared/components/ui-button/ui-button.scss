@@ -23,15 +23,30 @@
   }
 }
 
-.ui-button--primary {
+.ui-button--primary,
+.ui-button--secondary {
   min-height: 3rem;
   padding: 0.75rem 1.25rem;
   border-radius: var(--cp-radius-pill);
+}
+
+.ui-button--primary {
   background: var(--cp-cobalt);
   color: #fff;
 
   &:hover:not(:disabled) {
     background: var(--cp-cobalt-hover);
+  }
+}
+
+.ui-button--secondary {
+  width: auto;
+  background: var(--cp-paper);
+  color: var(--cp-ink);
+  border: 1px solid var(--cp-input-border);
+
+  &:hover:not(:disabled) {
+    background: var(--cp-paper-muted);
   }
 }
 

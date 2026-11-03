@@ -9,5 +9,5 @@ export class UiButton {
   readonly type = input<'button' | 'submit' | 'reset'>('button');
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
-  readonly variant = input<'primary' | 'link'>('primary');
+  readonly variant = input<'primary' | 'secondary' | 'link'>('primary');
 }

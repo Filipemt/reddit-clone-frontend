@@ -24,6 +24,7 @@ export class UiTextField implements ControlValueAccessor {
   readonly placeholder = input('');
   readonly autocomplete = input<string | null>(null);
   readonly error = input<string | null>(null);
+  readonly maxlength = input<number | null>(null);
   readonly inputId = input(`ui-field-${crypto.randomUUID()}`);
 
   protected readonly value = signal('');

@@ -1,0 +1,25 @@
+<div class="ui-file-field">
+  <span class="ui-file-field__label">{{ label() }}</span>
+  <div class="ui-file-field__row">
+    <label class="ui-file-field__button" [class.is-disabled]="disabled()">
+      {{ buttonLabel() }}
+      <input
+        #fileInput
+        type="file"
+        [accept]="accept()"
+        [disabled]="disabled()"
+        (change)="onFileSelected($event)"
+      />
+    </label>
+    @if (fileName(); as name) {
+      <button
+        type="button"
+        class="ui-file-field__clear"
+        [disabled]="disabled()"
+        (click)="clear(fileInput)"
+      >
+        {{ name }} ×
+      </button>
+    }
+  </div>
+</div>

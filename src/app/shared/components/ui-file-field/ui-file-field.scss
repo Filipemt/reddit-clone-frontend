@@ -1,0 +1,73 @@
+:host {
+  display: block;
+}
+
+.ui-file-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ui-file-field__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--cp-label);
+}
+
+.ui-file-field__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.ui-file-field__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--cp-input-border);
+  border-radius: var(--cp-radius-pill);
+  background: var(--cp-paper);
+  color: var(--cp-ink);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  &:hover:not(.is-disabled) {
+    background: var(--cp-paper-muted);
+  }
+
+  &.is-disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+
+    input {
+      cursor: not-allowed;
+    }
+  }
+}
+
+.ui-file-field__clear {
+  border: none;
+  background: var(--cp-paper-muted);
+  border-radius: var(--cp-radius-pill);
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  color: var(--cp-ink);
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
