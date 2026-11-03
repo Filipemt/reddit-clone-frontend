@@ -1,0 +1,14 @@
+<button
+  class="ui-button"
+  [class.ui-button--primary]="variant() === 'primary'"
+  [class.ui-button--link]="variant() === 'link'"
+  [attr.type]="type()"
+  [disabled]="disabled() || loading()"
+>
+  @if (loading()) {
+    <span class="ui-button__spinner" aria-hidden="true"></span>
+  }
+  <span [class.ui-button__label--hidden]="loading()">
+    <ng-content />
+  </span>
+</button>

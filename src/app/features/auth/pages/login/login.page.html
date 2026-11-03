@@ -1,0 +1,42 @@
+<section class="auth-layout">
+  <aside class="auth-layout__brand" aria-label="CloneReddit">
+    <div class="auth-layout__brand-inner">
+      <span class="auth-layout__mark" aria-hidden="true"></span>
+      <h1 class="auth-layout__title">CloneReddit</h1>
+    </div>
+  </aside>
+
+  <div class="auth-layout__panel">
+    <div class="auth-card">
+      <h2 class="auth-card__title">Entrar</h2>
+
+      <form class="auth-card__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <app-ui-text-field
+          label="Nome de usuário"
+          placeholder="seu_usuario"
+          autocomplete="username"
+          formControlName="username"
+          [error]="usernameError()"
+        />
+
+        <app-ui-text-field
+          label="Senha"
+          type="password"
+          placeholder="mín. 8 caracteres"
+          autocomplete="current-password"
+          formControlName="password"
+          [error]="passwordError()"
+        />
+
+        @if (formError()) {
+          <p class="auth-card__error" role="alert">{{ formError() }}</p>
+        }
+
+        <div class="auth-card__actions">
+          <app-ui-button type="submit" [loading]="submitting()">Entrar</app-ui-button>
+          <a class="auth-card__footer-link" routerLink="/auth/register">Criar conta</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

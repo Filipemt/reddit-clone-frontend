@@ -1,10 +1,20 @@
 import { Routes } from '@angular/router';
 
-import { AuthPlaceholderPage } from './pages/auth-placeholder.page';
+import { LoginPage } from './pages/login/login.page';
+import { RegisterPage } from './pages/register/register.page';
 
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
-    component: AuthPlaceholderPage,
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    component: LoginPage,
+  },
+  {
+    path: 'register',
+    component: RegisterPage,
   },
 ];

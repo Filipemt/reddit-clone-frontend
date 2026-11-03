@@ -5,16 +5,16 @@ import { HomePlaceholderPage } from './features/home/pages/home-placeholder.page
 
 export const routes: Routes = [
   {
+    path: 'auth',
+    loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
+  },
+  {
     path: '',
     component: Shell,
     children: [
       {
         path: '',
         component: HomePlaceholderPage,
-      },
-      {
-        path: 'auth',
-        loadChildren: () => import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
       },
       {
         path: 'users',
