@@ -1,24 +1,105 @@
-<header class="shell__header">
-  <a routerLink="/" class="shell__brand">reddit-clone</a>
-  <nav class="shell__nav" aria-label="Feature placeholders">
-    <a routerLink="/auth/login" routerLinkActive="is-active">auth</a>
-    <a routerLink="/communities" routerLinkActive="is-active">communities</a>
-    <a routerLink="/posts" routerLinkActive="is-active">posts</a>
-    <a routerLink="/search" routerLinkActive="is-active">search</a>
-    <a routerLink="/notifications" routerLinkActive="is-active">notifications</a>
-    <a routerLink="/users" routerLinkActive="is-active">users</a>
-  </nav>
+<div class="shell">
+  <aside class="shell__left" aria-label="Navegação principal">
+    <a routerLink="/" class="shell__brand">
+      <span class="shell__brand-mark" aria-hidden="true"></span>
+      <span class="shell__brand-text">CloneReddit</span>
+    </a>
 
-  <div class="shell__session">
-    @if (isAuthenticated()) {
-      <span class="shell__session-status">Sessão ativa</span>
-      <button type="button" class="shell__logout" (click)="logout()">Sair</button>
-    } @else {
-      <a class="shell__session-link" routerLink="/auth/login">Entrar</a>
+    <nav class="shell__nav">
+      <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"
+            fill="currentColor"
+          />
+        </svg>
+        Home
+      </a>
+      <a routerLink="/communities" routerLinkActive="is-active">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M7 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.5 19a4.5 4.5 0 0 1 9 0V20H3.5v-1Zm8 0a5.98 5.98 0 0 1 3.1-5.2A4.99 4.99 0 0 1 20.5 19V20h-9v-1Z"
+            fill="currentColor"
+          />
+        </svg>
+        Communities
+      </a>
+      <a routerLink="/users" routerLinkActive="is-active">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path
+            d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4.4 0-8 2.2-8 5v1h16v-1c0-2.8-3.6-5-8-5Z"
+            fill="currentColor"
+          />
+        </svg>
+        Profile
+      </a>
+    </nav>
+
+    <a routerLink="/" class="shell__new-post">New post</a>
+
+    <form class="shell__search shell__search--mobile" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <path
+          d="M8.5 3a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0-1.5a7 7 0 1 0 4.39 12.36l3.38 3.37a1 1 0 0 0 1.41-1.41l-3.37-3.38A7 7 0 0 0 8.5 1.5Z"
+          fill="currentColor"
+        />
+      </svg>
+      <input
+        type="search"
+        formControlName="q"
+        placeholder="Search CloneReddit"
+        aria-label="Search CloneReddit"
+      />
+    </form>
+
+    @if (currentUser(); as user) {
+      <div class="shell__user">
+        <span class="shell__user-avatar" aria-hidden="true"></span>
+        <div class="shell__user-meta">
+          <strong>{{ user.username }}</strong>
+          <span>@{{ user.username }} · karma {{ formatCompactCount(user.karma) }}</span>
+        </div>
+        <button type="button" class="shell__logout" (click)="logout()" aria-label="Sair">
+          Sair
+        </button>
+      </div>
     }
-  </div>
-</header>
+  </aside>
 
-<main class="shell__main">
-  <router-outlet />
-</main>
+  <main class="shell__main">
+    <router-outlet />
+  </main>
+
+  <aside class="shell__right" aria-label="Descoberta">
+    <form class="shell__search" [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+      <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+        <path
+          d="M8.5 3a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0-1.5a7 7 0 1 0 4.39 12.36l3.38 3.37a1 1 0 0 0 1.41-1.41l-3.37-3.38A7 7 0 0 0 8.5 1.5Z"
+          fill="currentColor"
+        />
+      </svg>
+      <input
+        type="search"
+        formControlName="q"
+        placeholder="Search CloneReddit"
+        aria-label="Search CloneReddit"
+      />
+    </form>
+
+    <section class="shell__widget">
+      <h2>Communities for you</h2>
+      <ul>
+        @for (community of suggestedCommunities(); track community.communityId) {
+          <li>
+            <a routerLink="/communities">
+              <strong>r/{{ community.slug }}</strong>
+              <span>{{ formatCompactCount(community.memberCount) }} members</span>
+            </a>
+          </li>
+        } @empty {
+          <li class="shell__widget-empty">Nenhuma sugestão no momento.</li>
+        }
+      </ul>
+    </section>
+  </aside>
+</div>

@@ -3,6 +3,7 @@ import { Injectable, computed, inject } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
+import { readUserIdFromAccessToken } from './jwt.util';
 import { LoginRequest, RegisterRequest, TokenData } from './models/auth.models';
 import { TokenStorageService } from './token-storage.service';
 
@@ -12,6 +13,9 @@ export class AuthService {
   private readonly tokenStorage = inject(TokenStorageService);
 
   readonly isAuthenticated = computed(() => !!this.tokenStorage.accessTokenValue());
+  readonly currentUserId = computed(() =>
+    readUserIdFromAccessToken(this.tokenStorage.accessTokenValue()),
+  );
 
   login(credentials: LoginRequest): Observable<TokenData> {
     return this.http
