@@ -8,6 +8,15 @@
     <a routerLink="/notifications" routerLinkActive="is-active">notifications</a>
     <a routerLink="/users" routerLinkActive="is-active">users</a>
   </nav>
+
+  <div class="shell__session">
+    @if (isAuthenticated()) {
+      <span class="shell__session-status">Sessão ativa</span>
+      <button type="button" class="shell__logout" (click)="logout()">Sair</button>
+    } @else {
+      <a class="shell__session-link" routerLink="/auth/login">Entrar</a>
+    }
+  </div>
 </header>
 
 <main class="shell__main">

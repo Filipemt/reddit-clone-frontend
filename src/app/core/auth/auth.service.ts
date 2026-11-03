@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { Observable, switchMap, tap } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
@@ -10,9 +10,8 @@ import { TokenStorageService } from './token-storage.service';
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenStorage = inject(TokenStorageService);
-  private readonly authenticated = signal(!!this.tokenStorage.getAccessToken());
 
-  readonly isAuthenticated = computed(() => this.authenticated());
+  readonly isAuthenticated = computed(() => !!this.tokenStorage.accessTokenValue());
 
   login(credentials: LoginRequest): Observable<TokenData> {
     return this.http
@@ -37,11 +36,9 @@ export class AuthService {
 
   markAuthenticated(accessToken: string, refreshToken: string): void {
     this.tokenStorage.setTokens(accessToken, refreshToken);
-    this.authenticated.set(true);
   }
 
   clearSession(): void {
     this.tokenStorage.clear();
-    this.authenticated.set(false);
   }
 }
