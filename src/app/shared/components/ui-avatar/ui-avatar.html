@@ -1,0 +1,11 @@
+<span
+  class="ui-avatar"
+  [class.ui-avatar--sm]="size() === 'sm'"
+  [class.ui-avatar--md]="size() === 'md'"
+  [class.ui-avatar--lg]="size() === 'lg'"
+  aria-hidden="true"
+>
+  @if (src(); as url) {
+    <img [src]="url" [alt]="alt()" />
+  }
+</span>
