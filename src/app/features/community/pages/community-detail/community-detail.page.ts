@@ -1,10 +1,13 @@
 import { Component, DestroyRef, ElementRef, OnInit, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, finalize, of, switchMap, tap } from 'rxjs';
 
-import { formatCompactCount, formatRelativeTime } from '../../../../shared';
+import {
+  PostComposer,
+  PostComposerSubmit,
+} from '../../../post/components/post-composer/post-composer';
+import { PostFeed } from '../../../post/components/post-feed/post-feed';
 import { FeedPost } from '../../../post/models/post.model';
 import { PostService } from '../../../post/services/post.service';
 import { AuthorLookupService } from '../../../user/services/author-lookup.service';
@@ -18,7 +21,7 @@ import { communityHttpError } from '../../utils/community-http-error';
 
 @Component({
   selector: 'app-community-detail-page',
-  imports: [ReactiveFormsModule, RouterLink, CommunityHeader, PostSortTabs],
+  imports: [RouterLink, CommunityHeader, PostSortTabs, PostComposer, PostFeed],
   templateUrl: './community-detail.page.html',
   styleUrl: './community-detail.page.scss',
 })
@@ -28,10 +31,10 @@ export class CommunityDetailPage implements OnInit {
   private readonly postsApi = inject(PostService);
   private readonly authors = inject(AuthorLookupService);
   private readonly voteService = inject(VoteService);
-  private readonly fb = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
 
-  private readonly composerSection = viewChild<ElementRef<HTMLElement>>('composerSection');
+  private readonly composerHost = viewChild('composerSection', { read: ElementRef });
+  private readonly composer = viewChild(PostComposer);
 
   readonly loading = signal(true);
   readonly postsLoading = signal(false);
@@ -44,15 +47,6 @@ export class CommunityDetailPage implements OnInit {
   readonly community = signal<Community | null>(null);
   readonly posts = signal<FeedPost[]>([]);
   readonly sort = signal<PostSort>('new');
-  readonly mediaFile = signal<File | null>(null);
-
-  readonly composer = this.fb.nonNullable.group({
-    title: ['', [Validators.required, Validators.maxLength(300)]],
-    body: ['', Validators.maxLength(40000)],
-  });
-
-  readonly formatRelativeTime = formatRelativeTime;
-  readonly formatCompactCount = formatCompactCount;
 
   ngOnInit(): void {
     this.route.paramMap
@@ -66,8 +60,6 @@ export class CommunityDetailPage implements OnInit {
           this.posts.set([]);
           this.sort.set('new');
           this.composerOpen.set(false);
-          this.composer.reset({ title: '', body: '' });
-          this.mediaFile.set(null);
         }),
         switchMap((params) => {
           const slug = params.get('slug') ?? '';
@@ -175,33 +167,21 @@ export class CommunityDetailPage implements OnInit {
     }
     this.composerOpen.set(true);
     setTimeout(() => {
-      this.composerSection()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.composerHost()?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
-  onMediaSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.mediaFile.set(input.files?.[0] ?? null);
-  }
-
-  clearMedia(input: HTMLInputElement): void {
-    this.mediaFile.set(null);
-    input.value = '';
-  }
-
-  submitPost(): void {
+  onComposerSubmit(payload: PostComposerSubmit): void {
     const community = this.community();
-    if (!community?.isMember || this.composer.invalid || this.posting()) {
-      this.composer.markAllAsTouched();
+    if (!community?.isMember || this.posting()) {
       return;
     }
 
-    const { title, body } = this.composer.getRawValue();
     this.posting.set(true);
     this.actionError.set(null);
 
     this.postsApi
-      .create(community.communityId, { title, body: body || null }, this.mediaFile())
+      .create(community.communityId, { title: payload.title, body: payload.body || null }, payload.media)
       .pipe(finalize(() => this.posting.set(false)))
       .subscribe({
         next: (created) => {
@@ -214,8 +194,7 @@ export class CommunityDetailPage implements OnInit {
               myVote: 0,
             };
             this.posts.update((list) => [feedPost, ...list]);
-            this.composer.reset({ title: '', body: '' });
-            this.mediaFile.set(null);
+            this.composer()?.resetForm();
             this.sort.set('new');
           });
         },
@@ -225,14 +204,14 @@ export class CommunityDetailPage implements OnInit {
       });
   }
 
-  vote(post: FeedPost, next: VoteValue): void {
-    const value: VoteValue = post.myVote === next ? 0 : next;
+  onVote(event: { post: FeedPost; value: VoteValue }): void {
+    const value: VoteValue = event.post.myVote === event.value ? 0 : event.value;
 
-    this.voteService.votePost(post.postId, value).subscribe({
+    this.voteService.votePost(event.post.postId, value).subscribe({
       next: (res) => {
         this.posts.update((list) =>
           list.map((item) =>
-            item.postId === post.postId
+            item.postId === event.post.postId
               ? { ...item, score: res.score, myVote: value }
               : item,
           ),

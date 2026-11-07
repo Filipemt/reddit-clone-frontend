@@ -1,0 +1,15 @@
+@if (loading()) {
+  <p class="post-feed__status">{{ loadingMessage() }}</p>
+} @else if (error(); as message) {
+  <p class="post-feed__error" role="alert">{{ message }}</p>
+} @else if (posts().length === 0) {
+  <p class="post-feed__status">{{ emptyMessage() }}</p>
+} @else {
+  <ul class="post-feed__list">
+    @for (post of posts(); track post.postId) {
+      <li>
+        <app-post-card [post]="post" (vote)="vote.emit($event)" />
+      </li>
+    }
+  </ul>
+}

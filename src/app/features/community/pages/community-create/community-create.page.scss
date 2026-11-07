@@ -4,24 +4,6 @@
   min-height: 100%;
 }
 
-.community-create__header {
-  padding: 1rem 1.25rem 0.75rem;
-  border-bottom: 1px solid var(--cp-input-border);
-}
-
-.community-create__title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.community-create__subtitle {
-  margin: 0.25rem 0 0;
-  font-size: 0.875rem;
-  color: var(--cp-muted);
-}
-
 .community-create__form {
   display: flex;
   flex-direction: column;

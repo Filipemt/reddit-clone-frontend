@@ -1,0 +1,61 @@
+<article class="post-card">
+  <div class="post-card__meta">
+    <app-ui-avatar />
+    <div class="post-card__meta-text">
+      @if (post().authorUsername; as author) {
+        <span class="post-card__author">{{ author }}</span>
+        <span class="post-card__handle">@{{ author }}</span>
+      }
+      <span class="post-card__time">{{ formatRelativeTime(post().createdAt) }}</span>
+      @if (post().communitySlug; as slug) {
+        <a class="post-card__community" [routerLink]="['/communities', slug]">
+          in r/{{ slug }}
+        </a>
+      }
+    </div>
+  </div>
+
+  <h2 class="post-card__title">{{ post().title }}</h2>
+  @if (post().body) {
+    <p class="post-card__body">{{ post().body }}</p>
+  }
+  @if (post().media; as media) {
+    <img class="post-card__media" [src]="media.url" alt="" />
+  }
+
+  <div class="post-card__footer">
+    <button
+      type="button"
+      class="post-card__vote"
+      [class.is-active]="post().myVote === 1"
+      (click)="onVote(1)"
+      aria-label="Upvote"
+    >
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+        <path d="M8 3 13 10H3L8 3Z" fill="currentColor" />
+      </svg>
+      {{ formatCompactCount(post().score) }}
+    </button>
+    <button
+      type="button"
+      class="post-card__vote"
+      [class.is-active]="post().myVote === -1"
+      (click)="onVote(-1)"
+      aria-label="Downvote"
+    >
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+        <path d="M8 13 3 6h10L8 13Z" fill="currentColor" />
+      </svg>
+    </button>
+    <span class="post-card__comments">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+        <path
+          d="M2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v6A1.5 1.5 0 0 1 12.5 11H6l-3 3v-3H3.5A1.5 1.5 0 0 1 2 9.5v-6Z"
+          fill="currentColor"
+        />
+      </svg>
+      {{ formatCompactCount(post().commentCount) }}
+    </span>
+    <button type="button" class="post-card__share" disabled>Share</button>
+  </div>
+</article>

@@ -1,10 +1,8 @@
 <section class="community-create">
-  <header class="community-create__header">
-    <h1 class="community-create__title">Criar Comunidade</h1>
-    <p class="community-create__subtitle">
-      Defina nome, slug e visibilidade da nova comunidade.
-    </p>
-  </header>
+  <app-page-header
+    title="Criar Comunidade"
+    subtitle="Defina nome, slug e visibilidade da nova comunidade."
+  />
 
   <form class="community-create__form" [formGroup]="form" (ngSubmit)="submit()">
     <app-ui-text-field

@@ -20,132 +20,26 @@
     }
 
     @if (composerOpen() && item.isMember) {
-      <form
+      <app-post-composer
         #composerSection
-        class="composer"
-        [formGroup]="composer"
-        (ngSubmit)="submitPost()"
-      >
-        <div class="composer__avatar" aria-hidden="true"></div>
-        <div class="composer__body">
-          <p class="composer__community">Postando em r/{{ item.slug }}</p>
-          <input
-            class="composer__title"
-            type="text"
-            formControlName="title"
-            placeholder="What's happening in this community?"
-            maxlength="300"
-          />
-          <textarea
-            class="composer__text"
-            formControlName="body"
-            rows="2"
-            placeholder="Escreva mais detalhes (opcional)"
-            maxlength="40000"
-          ></textarea>
-          <div class="composer__actions">
-            <label class="composer__media">
-              attach media
-              <input #mediaInput type="file" accept="image/*" (change)="onMediaSelected($event)" />
-            </label>
-            @if (mediaFile(); as file) {
-              <button type="button" class="composer__media-clear" (click)="clearMedia(mediaInput)">
-                {{ file.name }} ×
-              </button>
-            }
-            <button
-              type="button"
-              class="composer__cancel"
-              (click)="composerOpen.set(false)"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="composer__submit"
-              [disabled]="composer.invalid || posting()"
-            >
-              {{ posting() ? 'Posting…' : 'Post' }}
-            </button>
-          </div>
-        </div>
-      </form>
+        mode="community"
+        [fixedCommunityId]="item.communityId"
+        [fixedCommunitySlug]="item.slug"
+        [posting]="posting()"
+        [showCancel]="true"
+        (submitted)="onComposerSubmit($event)"
+        (cancelled)="composerOpen.set(false)"
+      />
     }
 
     <app-post-sort-tabs [sort]="sort()" (sortChange)="onSortChange($event)" />
 
-    @if (postsLoading()) {
-      <p class="community-detail__status">Carregando posts…</p>
-    } @else if (postsError(); as message) {
-      <p class="community-detail__error community-detail__error--inline" role="alert">
-        {{ message }}
-      </p>
-    } @else if (posts().length === 0) {
-      <p class="community-detail__status">Nenhum post por enquanto. Seja o primeiro a publicar.</p>
-    } @else {
-      <ul class="feed">
-        @for (post of posts(); track post.postId) {
-          <li class="feed-item">
-            <div class="feed-item__meta">
-              <span class="feed-item__avatar" aria-hidden="true"></span>
-              <div class="feed-item__meta-text">
-                @if (post.authorUsername; as author) {
-                  <span class="feed-item__author">{{ author }}</span>
-                  <span class="feed-item__handle">@{{ author }}</span>
-                }
-                <span class="feed-item__time">{{ formatRelativeTime(post.createdAt) }}</span>
-                @if (post.communitySlug) {
-                  <span class="feed-item__community">in r/{{ post.communitySlug }}</span>
-                }
-              </div>
-            </div>
-
-            <h2 class="feed-item__title">{{ post.title }}</h2>
-            @if (post.body) {
-              <p class="feed-item__body">{{ post.body }}</p>
-            }
-            @if (post.media; as media) {
-              <img class="feed-item__media" [src]="media.url" alt="" />
-            }
-
-            <div class="feed-item__footer">
-              <button
-                type="button"
-                class="feed-item__vote"
-                [class.is-active]="post.myVote === 1"
-                (click)="vote(post, 1)"
-                aria-label="Upvote"
-              >
-                <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-                  <path d="M8 3 13 10H3L8 3Z" fill="currentColor" />
-                </svg>
-                {{ formatCompactCount(post.score) }}
-              </button>
-              <button
-                type="button"
-                class="feed-item__vote"
-                [class.is-active]="post.myVote === -1"
-                (click)="vote(post, -1)"
-                aria-label="Downvote"
-              >
-                <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-                  <path d="M8 13 3 6h10L8 13Z" fill="currentColor" />
-                </svg>
-              </button>
-              <span class="feed-item__comments">
-                <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-                  <path
-                    d="M2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v6A1.5 1.5 0 0 1 12.5 11H6l-3 3v-3H3.5A1.5 1.5 0 0 1 2 9.5v-6Z"
-                    fill="currentColor"
-                  />
-                </svg>
-                {{ formatCompactCount(post.commentCount) }}
-              </span>
-              <button type="button" class="feed-item__share" disabled>Share</button>
-            </div>
-          </li>
-        }
-      </ul>
-    }
+    <app-post-feed
+      [posts]="posts()"
+      [loading]="postsLoading()"
+      [error]="postsError()"
+      emptyMessage="Nenhum post por enquanto. Seja o primeiro a publicar."
+      (vote)="onVote($event)"
+    />
   }
 </section>

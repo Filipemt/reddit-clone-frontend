@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
+import { PageHeader } from '../../../../shared';
 import { CommunityRow } from '../../components/community-row/community-row';
 import { Community } from '../../models/community.model';
 import { CommunityService } from '../../services/community.service';
@@ -11,7 +12,7 @@ export type CommunityListTab = 'discover' | 'joined';
 
 @Component({
   selector: 'app-community-list-page',
-  imports: [RouterLink, CommunityRow],
+  imports: [RouterLink, CommunityRow, PageHeader],
   templateUrl: './community-list.page.html',
   styleUrl: './community-list.page.scss',
 })

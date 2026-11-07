@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
 
 import {
+  PageHeader,
   UiButton,
   UiFileField,
   UiSelect,
@@ -38,6 +39,7 @@ function slugValidator(control: AbstractControl): ValidationErrors | null {
   imports: [
     ReactiveFormsModule,
     RouterLink,
+    PageHeader,
     UiButton,
     UiFileField,
     UiSelect,

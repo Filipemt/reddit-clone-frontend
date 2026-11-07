@@ -4,27 +4,6 @@
   min-height: 100%;
 }
 
-.community-list__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem 0.75rem;
-}
-
-.community-list__title {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.community-list__subtitle {
-  margin: 0.25rem 0 0;
-  font-size: 0.875rem;
-  color: var(--cp-muted);
-}
-
 .community-list__create {
   flex: 0 0 auto;
   display: inline-flex;

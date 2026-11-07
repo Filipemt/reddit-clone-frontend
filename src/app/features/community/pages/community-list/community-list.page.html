@@ -1,11 +1,7 @@
 <section class="community-list">
-  <header class="community-list__header">
-    <div>
-      <h1 class="community-list__title">{{ title() }}</h1>
-      <p class="community-list__subtitle">{{ subtitle() }}</p>
-    </div>
+  <app-page-header [title]="title()" [subtitle]="subtitle()">
     <a routerLink="/communities/new" class="community-list__create">Create community</a>
-  </header>
+  </app-page-header>
 
   <div class="community-list__tabs" role="tablist" aria-label="Community views">
     <button

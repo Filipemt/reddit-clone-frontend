@@ -1,0 +1,24 @@
+:host {
+  display: block;
+}
+
+.post-feed__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-feed__status,
+.post-feed__error {
+  margin: 0;
+  padding: 1.5rem 1.25rem;
+  font-size: 0.95rem;
+}
+
+.post-feed__status {
+  color: var(--cp-muted);
+}
+
+.post-feed__error {
+  color: var(--cp-danger);
+}

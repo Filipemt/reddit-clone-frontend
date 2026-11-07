@@ -1,0 +1,65 @@
+<form class="post-composer" [formGroup]="form" (ngSubmit)="submit()">
+  <app-ui-avatar />
+  <div class="post-composer__body">
+    @if (mode() === 'home' && communities().length === 0) {
+      <p class="post-composer__hint">
+        {{ emptyHint() }}
+        <a routerLink="/communities">Ver comunidades</a>
+      </p>
+    } @else {
+      @if (mode() === 'home') {
+        <select
+          class="post-composer__community"
+          formControlName="communityId"
+          aria-label="Comunidade"
+        >
+          @for (community of communities(); track community.communityId) {
+            <option [value]="community.communityId">r/{{ community.slug }}</option>
+          }
+        </select>
+      } @else if (fixedCommunitySlug(); as slug) {
+        <p class="post-composer__community post-composer__community--label">
+          Postando em r/{{ slug }}
+        </p>
+      }
+
+      <input
+        class="post-composer__title"
+        type="text"
+        formControlName="title"
+        [placeholder]="titlePlaceholder()"
+        maxlength="300"
+      />
+      <textarea
+        class="post-composer__text"
+        formControlName="body"
+        rows="2"
+        placeholder="Escreva mais detalhes (opcional)"
+        maxlength="40000"
+      ></textarea>
+      <div class="post-composer__actions">
+        <label class="post-composer__media">
+          attach media
+          <input #mediaInput type="file" accept="image/*" (change)="onMediaSelected($event)" />
+        </label>
+        @if (mediaFile(); as file) {
+          <button type="button" class="post-composer__chip" (click)="clearMedia(mediaInput)">
+            {{ file.name }} ×
+          </button>
+        }
+        @if (showCancel()) {
+          <button type="button" class="post-composer__chip" (click)="cancelled.emit()">
+            Cancel
+          </button>
+        }
+        <button
+          type="submit"
+          class="post-composer__submit"
+          [disabled]="form.invalid || posting()"
+        >
+          {{ posting() ? 'Posting…' : 'Post' }}
+        </button>
+      </div>
+    }
+  </div>
+</form>
