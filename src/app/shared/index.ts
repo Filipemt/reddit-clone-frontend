@@ -4,6 +4,7 @@ export type { PagedResponse } from './models/paged-response.model';
 export { PageHeader } from './components/page-header/page-header';
 export { UiAvatar } from './components/ui-avatar/ui-avatar';
 export { UiButton } from './components/ui-button/ui-button';
+export { UiConfirmDialog } from './components/ui-confirm-dialog/ui-confirm-dialog';
 export { UiFileField } from './components/ui-file-field/ui-file-field';
 export { UiSelect } from './components/ui-select/ui-select';
 export type { UiSelectOption } from './components/ui-select/ui-select';

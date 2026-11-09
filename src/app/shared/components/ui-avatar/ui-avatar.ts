@@ -8,5 +8,5 @@ import { Component, input } from '@angular/core';
 export class UiAvatar {
   readonly src = input<string | null>(null);
   readonly alt = input('');
-  readonly size = input<'sm' | 'md' | 'lg'>('md');
+  readonly size = input<'sm' | 'md' | 'lg' | 'xl'>('md');
 }

@@ -1,0 +1,30 @@
+<div class="ui-confirm-dialog" role="presentation" (click)="onBackdropClick()">
+  <div
+    class="ui-confirm-dialog__panel"
+    role="alertdialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="'ui-confirm-dialog-title'"
+    [attr.aria-describedby]="'ui-confirm-dialog-message'"
+    (click)="$event.stopPropagation()"
+  >
+    <h2 id="ui-confirm-dialog-title" class="ui-confirm-dialog__title">{{ title() }}</h2>
+    <p id="ui-confirm-dialog-message" class="ui-confirm-dialog__message">{{ message() }}</p>
+
+    <div class="ui-confirm-dialog__actions">
+      <app-ui-button
+        variant="secondary"
+        [disabled]="busy()"
+        (click)="cancelled.emit()"
+      >
+        {{ cancelLabel() }}
+      </app-ui-button>
+      <app-ui-button
+        [variant]="confirmVariant()"
+        [loading]="busy()"
+        (click)="confirmed.emit()"
+      >
+        {{ confirmLabel() }}
+      </app-ui-button>
+    </div>
+  </div>
+</div>

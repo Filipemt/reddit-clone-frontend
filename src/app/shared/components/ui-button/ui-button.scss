@@ -24,7 +24,8 @@
 }
 
 .ui-button--primary,
-.ui-button--secondary {
+.ui-button--secondary,
+.ui-button--danger {
   min-height: 3rem;
   padding: 0.75rem 1.25rem;
   border-radius: var(--cp-radius-pill);
@@ -47,6 +48,23 @@
 
   &:hover:not(:disabled) {
     background: var(--cp-paper-muted);
+  }
+}
+
+.ui-button--danger {
+  position: relative;
+  width: auto;
+  background: var(--cp-paper);
+  color: var(--cp-danger);
+  border: 1px solid color-mix(in srgb, var(--cp-danger) 35%, var(--cp-input-border));
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--cp-danger) 8%, white);
+  }
+
+  .ui-button__spinner {
+    border-color: rgb(220 38 38 / 35%);
+    border-top-color: var(--cp-danger);
   }
 }
 
