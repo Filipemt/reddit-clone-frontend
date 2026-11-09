@@ -91,11 +91,17 @@
 .shell__user {
   margin-top: auto;
   display: grid;
-  grid-template-columns: 40px 1fr auto;
+  grid-template-columns: 40px 1fr;
   gap: 0.65rem;
   align-items: center;
   padding: 0.5rem;
   border-radius: 999px;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    background: var(--cp-paper-muted);
+  }
 }
 
 .shell__user-avatar {
@@ -123,16 +129,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-}
-
-.shell__logout {
-  border: none;
-  background: none;
-  color: var(--cp-cobalt);
-  font-weight: 600;
-  font-size: 0.8rem;
-  cursor: pointer;
-  padding: 0.25rem;
 }
 
 .shell__main {

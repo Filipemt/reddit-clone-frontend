@@ -53,16 +53,13 @@
     </form>
 
     @if (currentUser(); as user) {
-      <div class="shell__user">
+      <a routerLink="/users" class="shell__user">
         <span class="shell__user-avatar" aria-hidden="true"></span>
         <div class="shell__user-meta">
           <strong>{{ user.username }}</strong>
           <span>@{{ user.username }} · karma {{ formatCompactCount(user.karma) }}</span>
         </div>
-        <button type="button" class="shell__logout" (click)="logout()" aria-label="Sair">
-          Sair
-        </button>
-      </div>
+      </a>
     }
   </aside>
 

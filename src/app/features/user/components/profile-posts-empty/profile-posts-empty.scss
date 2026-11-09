@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.profile-posts-empty {
+  padding: 1.25rem;
+}
+
+.profile-posts-empty__title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.profile-posts-empty__message {
+  margin: 0.65rem 0 0;
+  padding: 1.1rem 1rem;
+  border-radius: var(--cp-radius-card);
+  background: var(--cp-paper-muted);
+  color: var(--cp-muted);
+  font-size: 0.925rem;
+  line-height: 1.4;
+}

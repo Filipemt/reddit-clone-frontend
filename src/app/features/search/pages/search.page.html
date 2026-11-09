@@ -36,7 +36,7 @@
       <ul>
         @for (user of users(); track user.userId) {
           <li>
-            <a routerLink="/users">
+            <a [routerLink]="['/users', user.userId]">
               <strong>@{{ user.username }}</strong>
               <span>karma {{ user.karma }}</span>
             </a>

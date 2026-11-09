@@ -1,0 +1,26 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.profile__status,
+.profile__error {
+  margin: 0;
+  padding: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.profile__status {
+  color: var(--cp-muted);
+}
+
+.profile__error {
+  color: var(--cp-danger);
+}
+
+.profile__error--inline {
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--cp-input-border);
+}

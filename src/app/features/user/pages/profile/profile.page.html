@@ -1,0 +1,36 @@
+<section class="profile">
+  <app-page-header title="Perfil" subtitle="GET /users/{userId}" />
+
+  @if (loading()) {
+    <p class="profile__status">Carregando perfil…</p>
+  } @else if (error(); as message) {
+    <p class="profile__error" role="alert">{{ message }}</p>
+  } @else if (profile(); as user) {
+    <app-profile-header
+      [profile]="user"
+      [isOwnProfile]="isOwnProfile()"
+      [busy]="deleting()"
+      (logout)="onLogout()"
+      (deleteAccount)="onDeleteRequest()"
+    />
+
+    @if (actionError(); as message) {
+      <p class="profile__error profile__error--inline" role="alert">{{ message }}</p>
+    }
+
+    <app-profile-posts-empty />
+  }
+</section>
+
+@if (confirmOpen()) {
+  <app-ui-confirm-dialog
+    title="Excluir conta?"
+    message="Esta ação desativa sua conta e remove seus vínculos com comunidades. Não será possível entrar novamente com este usuário."
+    confirmLabel="Excluir conta"
+    cancelLabel="Cancelar"
+    confirmVariant="danger"
+    [busy]="deleting()"
+    (confirmed)="onDeleteConfirm()"
+    (cancelled)="onDeleteCancel()"
+  />
+}

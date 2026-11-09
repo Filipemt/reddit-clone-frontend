@@ -1,0 +1,36 @@
+<header class="profile-header">
+  <div class="profile-header__cover" aria-hidden="true"></div>
+
+  <div class="profile-header__body">
+    <app-ui-avatar class="profile-header__avatar" size="xl" [alt]="profile().username" />
+
+    <div class="profile-header__info">
+      <h1 class="profile-header__name">{{ profile().username }}</h1>
+      <p class="profile-header__meta">
+        @{{ profile().username }} · karma {{ formatCompactCount(profile().karma) }}
+      </p>
+      <p class="profile-header__email">{{ profile().email }}</p>
+    </div>
+
+    @if (isOwnProfile()) {
+      <div class="profile-header__actions">
+        <button
+          type="button"
+          class="profile-header__btn profile-header__btn--secondary"
+          [disabled]="busy()"
+          (click)="logout.emit()"
+        >
+          Sair
+        </button>
+        <button
+          type="button"
+          class="profile-header__btn profile-header__btn--danger"
+          [disabled]="busy()"
+          (click)="deleteAccount.emit()"
+        >
+          Excluir conta
+        </button>
+      </div>
+    }
+  </div>
+</header>

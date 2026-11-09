@@ -12,4 +12,8 @@ export class UserService {
   getById(userId: string): Observable<UserProfile> {
     return this.http.get<UserProfile>(`${environment.apiUrl}/users/${userId}`);
   }
+
+  deleteMe(): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/users/me`);
+  }
 }

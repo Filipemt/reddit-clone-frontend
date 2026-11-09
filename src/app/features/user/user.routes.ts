@@ -1,10 +1,14 @@
 import { Routes } from '@angular/router';
 
-import { UserPlaceholderPage } from './pages/user-placeholder.page';
+import { ProfilePage } from './pages/profile/profile.page';
 
 export const USER_ROUTES: Routes = [
   {
     path: '',
-    component: UserPlaceholderPage,
+    component: ProfilePage,
+  },
+  {
+    path: ':userId',
+    component: ProfilePage,
   },
 ];

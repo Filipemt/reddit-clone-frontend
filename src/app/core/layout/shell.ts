@@ -51,9 +51,4 @@ export class Shell implements OnInit {
 
     void this.router.navigate(['/search'], { queryParams: { q } });
   }
-
-  logout(): void {
-    this.auth.clearSession();
-    void this.router.navigateByUrl('/auth/login');
-  }
 }
